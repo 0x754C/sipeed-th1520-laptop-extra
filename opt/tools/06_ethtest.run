@@ -1,0 +1,41 @@
+#!/bin/bash
+
+THISDIR="$(dirname "$(realpath "${0}")")/"
+export PATH="${THISDIR}:${PATH}"
+. "${THISDIR}"/utils.sh
+export LD_LIBRARY_PATH="${THISDIR}"
+
+url=http://192.168.0.104:8000/rand100MiB
+
+CURL=${THISDIR}/curl
+
+while true
+do
+	sudo nmcli device up end0
+	echo "eth:"
+	eth_dl_time=0
+	eth_dl_start=$(cat /proc/uptime | awk -F. '{print $1}')
+	${CURL} --interface end0 --max-time 10 ${url} > /dev/null
+	if [ "$?" -ne "0" ]
+	then
+		eth_dl_time=-1
+	fi
+	eth_dl_end=$(cat /proc/uptime | awk -F. '{print $1}')
+	if [ "${eth_dl_time}" = -1 ]
+	then
+		red
+		echo "下载失败"
+		nocolor
+		continue
+	fi
+	eth_dl_time=$((eth_dl_end - eth_dl_start))
+	echo -n "下载所用时间:"
+	if [ "${eth_dl_time}" -ge 5 ]
+	then
+		red
+	else
+		green
+	fi
+	echo "${eth_dl_time}"
+	nocolor
+done

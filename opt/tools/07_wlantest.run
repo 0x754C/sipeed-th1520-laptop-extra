@@ -1,0 +1,43 @@
+#!/bin/bash
+
+THISDIR="$(dirname "$(realpath "${0}")")/"
+export PATH="${THISDIR}:${PATH}"
+. "${THISDIR}"/utils.sh
+export LD_LIBRARY_PATH="${THISDIR}"
+
+url=http://192.168.0.104:8000/rand100MiB
+
+CURL=${THISDIR}/curl
+
+while true
+do
+	sudo nmcli device up wlan0
+	sudo nmcli dev wifi list | cat
+	sudo nmcli dev wifi connect Sipeed_Guest password 'qwert123'
+	echo "wlan:"
+	wlan_dl_time=0
+	wlan_dl_start=$(cat /proc/uptime | awk -F. '{print $1}')
+	${CURL} --interface wlan0 --max-time 20 ${url} > /dev/null
+	if [ "$?" -ne "0" ]
+	then
+		wlan_dl_time=-1
+	fi
+	wlan_dl_end=$(cat /proc/uptime | awk -F. '{print $1}')
+	if [ "${wlan_dl_time}" = -1 ]
+	then
+		red
+		echo "下载失败"
+		nocolor
+		continue
+	fi
+	wlan_dl_time=$((wlan_dl_end - wlan_dl_start))
+	echo -n "下载所用时间:"
+	if [ "${wlan_dl_time}" -ge 15 ]
+	then
+		red
+	else
+		green
+	fi
+	echo "${wlan_dl_time}"
+	nocolor
+done

@@ -1,0 +1,63 @@
+#!/bin/bash
+
+THISDIR="$(dirname "$(realpath "${0}")")/"
+export PATH="${THISDIR}:${PATH}"
+. "${THISDIR}"/utils.sh
+
+if [ -e ${HOME}/.config/autostart/DisplaySetup.desktop ]
+then
+	rm -fv ${HOME}/.config/autostart/DisplaySetup.desktop
+fi
+
+if [ ! -e ${HOME}/.config/autostart/fixup.desktop ]
+then
+	mkdir -pv ${HOME}/.config/autostart
+	cat "$(realpath $0)" > ${HOME}/.config/autostart/fixup
+	chmod +x ${HOME}/.config/autostart/fixup
+	(
+		echo "[Desktop Entry]"
+		echo "Type=Application"
+		echo "Exec=${HOME}/.config/autostart/fixup"
+		echo "Hidden=false"
+		echo "NoDisplay=false"
+		echo "X-GNOME-Autostart-enabled=true"
+		echo "Name=fixup"
+	) > ${HOME}/.config/autostart/fixup.desktop
+fi
+
+# thank ice
+if (cat /proc/device-tree/model | grep -a LicheeConsole4A);
+then
+	#xinput set-prop 'ydx' 'Coordinate Transformation Matrix' 1 0 0 0 1 0 0 0 1
+	ROTATE=1
+else
+	ROTATE=0
+fi
+
+if [ -z "$DISPLAY" ]
+then
+	export DSIPLAY=:0.0
+fi
+
+xinput_dev="pointer:Goodix Capacitive TouchScreen"
+
+if [ ! -d "/sys/class/drm/card0-DSI-1" ]; then
+    xrandr --output HDMI-1 --auto --primary
+    #echo off > /sys/class/drm/card0-DSI-1/status
+else
+    HDMI_STATUS="$(cat /sys/class/drm/card0-HDMI-A-1/status)"
+    if [ "${HDMI_STATUS}" = "disconnected" ]; then
+        if [ "${ROTATE}" = "1" ]; then
+            xrandr --output None1 --auto --rotate right --primary
+            xinput map-to-output "$xinput_dev" None1
+	fi
+    elif [ "${HDMI_STATUS}" = "connected" ]; then
+        xrandr --output HDMI-1 --auto --primary
+        if [ "${ROTATE}" = "1" ]; then
+            xrandr --output None1 --auto --rotate right --below HDMI-1
+            xinput map-to-output "$xinput_dev" None1
+	fi
+    fi
+fi
+
+exit 0

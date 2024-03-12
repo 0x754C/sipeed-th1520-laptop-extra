@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=./08_bluetest.run
+Terminal=true
+Icon=computer

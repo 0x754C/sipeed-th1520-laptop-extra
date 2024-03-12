@@ -1,0 +1,7 @@
+#!/bin/bash
+
+THISDIR="$(dirname "$(realpath "${0}")")/"
+export PATH="${THISDIR}:${PATH}"
+. "${THISDIR}"/utils.sh
+
+sudo ${THISDIR}/flash_ec.sh

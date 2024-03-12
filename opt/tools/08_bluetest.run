@@ -1,0 +1,14 @@
+#!/bin/bash
+
+THISDIR="$(dirname "$(realpath "${0}")")/"
+export PATH="${THISDIR}:${PATH}"
+. "${THISDIR}"/utils.sh
+export LD_LIBRARY_PATH="${THISDIR}"
+
+while true
+do
+	echo "bluetooth:"
+	bluetoothctl power on
+	echo "开始扫描，如果长时间没有扫描到设备，则标记蓝牙问题"
+	bluetoothctl --timeout 10 scan on 
+done

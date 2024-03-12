@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=./01_fixup.run
+Terminal=true
+Icon=computer

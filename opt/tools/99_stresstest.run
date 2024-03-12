@@ -1,0 +1,24 @@
+#!/bin/bash
+
+THISDIR="$(dirname "$(realpath "${0}")")/"
+export PATH="${THISDIR}:${PATH}"
+. "${THISDIR}"/utils.sh
+
+killall stress-ng
+( nice -n 10 -- sudo stress-ng -c4 -i4 -m4 ) &
+(
+while true
+do
+	temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+	if [ ${temp} -ge 65000 ]
+	then
+		red
+	else
+		green
+	fi
+	echo "SOC温度: ${temp}"
+	nocolor
+	echo "负载: $(uptime)"
+	sleep 3
+done
+)

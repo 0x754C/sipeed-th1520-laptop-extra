@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=./00_flash_ec.run
+Terminal=true
+Icon=computer

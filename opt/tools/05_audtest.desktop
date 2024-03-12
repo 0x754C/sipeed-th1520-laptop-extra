@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=./05_audtest.run
+Terminal=true
+Icon=computer

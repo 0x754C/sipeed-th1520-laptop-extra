@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=./04_keytest.run
+Terminal=true
+Icon=computer

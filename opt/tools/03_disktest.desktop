@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Test
+Exec=./03_disktest.run
+Terminal=true
+Icon=computer
