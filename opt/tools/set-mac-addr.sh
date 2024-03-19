@@ -54,8 +54,8 @@ fi
 FW_SETENV="${FW_SETENV} -c ${THISDIR}/fw_env.config"
 FW_PRINTENV="${FW_PRINTENV} -c ${THISDIR}/fw_env.config"
 
-"${FW_SETENV}" ethaddr $MAC0
-"${FW_SETENV}" eth1addr $MAC1
+${FW_SETENV} ethaddr $MAC0
+${FW_SETENV} eth1addr $MAC1
 
 ${FW_PRINTENV} ethaddr
 ${FW_PRINTENV} eth1addr

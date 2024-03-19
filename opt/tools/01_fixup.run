@@ -42,7 +42,7 @@ fi
 xinput_dev="pointer:Goodix Capacitive TouchScreen"
 
 if [ ! -d "/sys/class/drm/card0-DSI-1" ]; then
-    xrandr --output HDMI-1 --auto --primary
+    xrandr --output HDMI1 --auto --primary
     #echo off > /sys/class/drm/card0-DSI-1/status
 else
     HDMI_STATUS="$(cat /sys/class/drm/card0-HDMI-A-1/status)"
@@ -52,9 +52,9 @@ else
             xinput map-to-output "$xinput_dev" None1
 	fi
     elif [ "${HDMI_STATUS}" = "connected" ]; then
-        xrandr --output HDMI-1 --auto --primary
+        xrandr --output HDMI1 --auto --primary
         if [ "${ROTATE}" = "1" ]; then
-            xrandr --output None1 --auto --rotate right --below HDMI-1
+            xrandr --output None1 --auto --rotate right --below HDMI1
             xinput map-to-output "$xinput_dev" None1
 	fi
     fi

@@ -5,7 +5,7 @@ export PATH="${THISDIR}:${PATH}"
 . "${THISDIR}"/utils.sh
 export LD_LIBRARY_PATH="${THISDIR}"
 
-url=http://192.168.0.104:8000/rand100MiB
+url=http://192.168.0.104:8000/rand10MiB
 
 CURL=${THISDIR}/curl
 
@@ -32,7 +32,7 @@ do
 	fi
 	wlan_dl_time=$((wlan_dl_end - wlan_dl_start))
 	echo -n "下载所用时间:"
-	if [ "${wlan_dl_time}" -ge 15 ]
+	if [ "${wlan_dl_time}" -ge 12 ]
 	then
 		red
 	else
