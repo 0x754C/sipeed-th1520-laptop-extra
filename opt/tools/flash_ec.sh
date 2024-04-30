@@ -6,6 +6,13 @@ THISDIR="$(dirname "$(realpath "${0}")")/"
 export PATH="${THISDIR}:${PATH}"
 . "${THISDIR}"/utils.sh
 
+if (cat /proc/device-tree/model | grep -a LicheePocket4A);
+then
+	echo "LicheePocket4A ec flash is not support "
+	sleep 65535
+fi
+
+
 FWDIR="${THISDIR}/../firmware"
 
 if [ $(id -u) -ne 0 ]
@@ -19,6 +26,9 @@ then
 	if (cat /proc/device-tree/model | grep -a LicheeConsole4A);
 	then
 		FW="${FWDIR}/ch58x-sipeed-ec-console4a.bin"
+	elif (cat /proc/device-tree/model | grep -a Plastic)
+	then
+		FW="${FWDIR}/ch58x-sipeed-ec-14inch-plastic.bin"
 	else
 		FW="${FWDIR}/ch58x-sipeed-ec-14inch-metal.bin"
 	fi

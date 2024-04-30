@@ -1,0 +1,1 @@
+dpkg-deb --root-owner-group --build sipeed-th1520-laptop-extra

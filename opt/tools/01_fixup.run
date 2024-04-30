@@ -26,12 +26,18 @@ then
 fi
 
 # thank ice
+
+ROTATE=0
+
 if (cat /proc/device-tree/model | grep -a LicheeConsole4A);
 then
 	#xinput set-prop 'ydx' 'Coordinate Transformation Matrix' 1 0 0 0 1 0 0 0 1
 	ROTATE=1
-else
-	ROTATE=0
+fi
+
+if (cat /proc/device-tree/model | grep -a LicheePocket4A);
+then
+	ROTATE=1
 fi
 
 if [ -z "$DISPLAY" ]
